@@ -1,0 +1,1 @@
+requireDepartmentById(id);
