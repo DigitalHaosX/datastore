@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { requirePersonById } from "../store/persons/actions";
 import { observer } from "mobx-react-lite";
 import { toJS } from "mobx";
+import { Input, InputNumber, Button, Space } from "antd";
 
 const PersonForm = () => {
   const { id } = useParams(); // Get the selected person's ID from the route params
@@ -46,32 +47,34 @@ const PersonForm = () => {
     <form>
       <label>
         Name:
-        <input
-          type="text"
+        <Input
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)} // Update name state on change
         />
       </label>
       <label>
         Surname:
-        <input
-          type="text"
+        <Input
           value={lastName}
-          onChange={(e) => setLastName(e.target.value)} // Update surname state on change
+          onChange={(e) => setLastName(e.target.value)} // Update name state on change
         />
       </label>
-      <label>
-        Score:
-        <input
-          type="number"
-          value={score}
-          min="0"
-          max="100"
-          onChange={(e) => setScore(e.target.value)}
-        />
-        %
-      </label>
-      <button onClick={handleSave}>SAVE</button>
+      <Space>
+        <label>
+          Score:
+          <InputNumber
+            defaultValue={score}
+            min={0}
+            max={100}
+            formatter={(value) => (value !== undefined ? `${value}%` : "")}
+            parser={(value) => value.replace("%", "")}
+            onChange={(value) => setScore(value)}
+          />
+        </label>
+      </Space>
+      <Button type="primary" onClick={handleSave}>
+        SAVE
+      </Button>
     </form>
   );
 };
