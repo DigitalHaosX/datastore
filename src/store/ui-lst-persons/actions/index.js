@@ -25,7 +25,7 @@ export const loadPersons = async () => {
 
   /* console.log("xx", toJS(pers)); */
 
-  /* console.log("got from server", serverData);
+ /*  console.log("got from server", serverData);
   const pers = requirePersonById(id);
   pers.setFirstName(serverData.surname);
   pers.setLastName(serverData.name);

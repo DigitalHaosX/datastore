@@ -11,6 +11,7 @@ export class Person {
   _firstName = "";
   _lastName = "";
   _score = "";
+  _team = "";
 
   constructor(id) {
     this._id = id;
@@ -31,6 +32,10 @@ export class Person {
       _score: observable,
       score: computed,
       setScore: action.bound,
+
+      _team: observable,
+      team: computed,
+      setTeam: action.bound,
 
       updateFromServer: action.bound,
     });
@@ -68,11 +73,19 @@ export class Person {
     this._score = val;
   };
 
+  get team() {
+    return this._team;
+  }
+  setTeam = (val) => {
+    this._team = val;
+  };
+
   updateFromServer = (serverData) => {
     runInAction(() => {
       this.setFirstName(serverData.name);
       this.setLastName(serverData.surname);
       this.setScore(serverData.score);
+      this.setTeam(serverData.team);
     });
   };
 }

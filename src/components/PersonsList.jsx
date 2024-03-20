@@ -5,24 +5,33 @@ import { loadPersons } from "../store/ui-lst-persons/actions";
 import root from "../store";
 import { observer } from "mobx-react-lite";
 import { requirePersonById } from "../store/persons/actions";
-/* import { toJS } from "mobx"; */
+import { Row, Col } from "antd";
 
 const ListItem = observer(({ id }) => {
   const pers = requirePersonById(id);
-  /* console.log("dd", toJS(pers)); */
+
   return (
-    <div onClick={() => id} style={{ cursor: "pointer" }}>
-      <Link to={`/persons/${id}`}>
-        {pers.id}
-        {pers.firstName}
-        {pers.lastName}
-        {pers.score}
-      </Link>
-    </div>
+    <Col span={12}>
+      <div onClick={() => id} style={{ cursor: "pointer", marginBottom: 10 }}>
+        <Link to={`/persons/${id}`}>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            {/* Modified line to wrap ID and name in a flex container */}
+            <div
+              style={{ border: "2px", color: pers.team, marginRight: "10px" }}
+            >
+              {pers.id}
+            </div>
+            <div>
+              {pers.firstName} {pers.lastName} {pers.score} {pers.team}
+            </div>
+          </div>
+        </Link>
+      </div>
+    </Col>
   );
 });
 
-const PersonsList = observer(() => {
+const PersonsList = observer(({ selectedColor, updateIdColor }) => {
   const { id } = useParams();
 
   useEffect(() => {
@@ -30,24 +39,36 @@ const PersonsList = observer(() => {
   }, []);
 
   const ids = root.uiLstPersons.ids;
-  /* console.log("id", toJS(ids)); */
+
+  const handleColorUpdate = (id, color) => {
+    updateIdColor(id, color);
+  };
 
   return (
-    <div style={{ display: "flex", justifyContent: "space-between" }}>
-      <div style={{ flex: 1 }}>
-        <h2>Left Side</h2>
+    <Row gutter={[16, 16]}>
+      <Col span={12}>
+        <h2 style={{ color: "blue", border: "1px solid blue", padding: "5px" }}>
+          Left Side
+        </h2>
         <div>
           {ids.map((id) => (
             <ListItem key={id} id={id} />
           ))}
         </div>
-      </div>
-      <div style={{ flex: 1 }}>
-        <h2>Right Side</h2>
+      </Col>
+      <Col span={12}>
+        <h2 style={{ color: "red", border: "1px solid red", padding: "5px" }}>
+          Right Side
+        </h2>
         {/* Conditionally render the PersonForm component */}
         {id ? (
           <>
-            <PersonForm id={id} />
+            <PersonForm
+              key={id}
+              id={id}
+              selectedColor={selectedColor}
+              updateColor={handleColorUpdate}
+            />
           </>
         ) : (
           <h3>
@@ -55,8 +76,8 @@ const PersonsList = observer(() => {
             Side
           </h3>
         )}
-      </div>
-    </div>
+      </Col>
+    </Row>
   );
 });
 
