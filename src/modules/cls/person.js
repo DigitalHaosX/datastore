@@ -12,6 +12,8 @@ export class Person {
   _lastName = "";
   _score = "";
   _team = "";
+  _address = "";
+  _studies = "";
 
   constructor(id) {
     this._id = id;
@@ -36,6 +38,14 @@ export class Person {
       _team: observable,
       team: computed,
       setTeam: action.bound,
+
+      _address: observable,
+      address: computed,
+      setAddress: action.bound,
+
+      _studies: observable,
+      studies: computed,
+      setStudies: action.bound,
 
       updateFromServer: action.bound,
     });
@@ -80,12 +90,28 @@ export class Person {
     this._team = val;
   };
 
+  get address() {
+    return this._address;
+  }
+  setAddress = (val) => {
+    this._address = val;
+  };
+
+  get studies() {
+    return this._studies;
+  }
+  setStudies = (val) => {
+    this._studies = val;
+  };
+
   updateFromServer = (serverData) => {
     runInAction(() => {
       this.setFirstName(serverData.name);
       this.setLastName(serverData.surname);
       this.setScore(serverData.score);
       this.setTeam(serverData.team);
+      this.setAddress(serverData.address);
+      this.setStudies(serverData.studies);
     });
   };
 }

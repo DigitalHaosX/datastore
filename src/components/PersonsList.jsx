@@ -6,6 +6,7 @@ import root from "../store";
 import { observer } from "mobx-react-lite";
 import { requirePersonById } from "../store/persons/actions";
 import { Row, Col } from "antd";
+import PersonFormDetails from "./PersonFormDetails";
 
 const ListItem = observer(({ id }) => {
   const pers = requirePersonById(id);
@@ -22,7 +23,8 @@ const ListItem = observer(({ id }) => {
               {pers.id}
             </div>
             <div>
-              {pers.firstName} {pers.lastName} {pers.score} {pers.team}
+              {pers.firstName} {pers.lastName} {pers.score} {pers.team}{" "}
+              {pers.address} {pers.studies}
             </div>
           </div>
         </Link>
@@ -48,7 +50,7 @@ const PersonsList = observer(({ selectedColor, updateIdColor }) => {
     <Row gutter={[16, 16]}>
       <Col span={12}>
         <h2 style={{ color: "blue", border: "1px solid blue", padding: "5px" }}>
-          Left Side
+          Lista Persoane
         </h2>
         <div>
           {ids.map((id) => (
@@ -58,8 +60,12 @@ const PersonsList = observer(({ selectedColor, updateIdColor }) => {
       </Col>
       <Col span={12}>
         <h2 style={{ color: "red", border: "1px solid red", padding: "5px" }}>
-          Right Side
+          Detalii Persoana
         </h2>
+        <PersonFormDetails id={id} label="Base Data" to="base-data" />
+        <PersonFormDetails id={id} label="Adresa" to="adresa" />
+        <PersonFormDetails id={id} label="Studii" to="studii" />
+
         {/* Conditionally render the PersonForm component */}
         {id ? (
           <>
@@ -81,4 +87,6 @@ const PersonsList = observer(({ selectedColor, updateIdColor }) => {
   );
 });
 
-export default PersonsList;
+export default  PersonsList;
+
+
